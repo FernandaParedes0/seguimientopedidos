@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Consulta de Estado de Compra</h2>
+    <form id="consultaForm">
+      <label for="idSeguimiento">ID de Seguimiento:</label>
+      <input type="text" id="idSeguimiento" name="idSeguimiento" required>
+      <button type="submit">Consultar</button>
+    </form>
+    <div id="resultado"></div>
+    <script>
+        const form = document.getElementById('consultaForm');
+        const resultadoDiv = document.getElementById('resultado');
+    
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const idSeguimiento = document.getElementById('idSeguimiento').value;
+    
+          try {
+            const response = await fetch(`/compras/${idSeguimiento}`);
+            const data = await response.json();
+
+            if (response.ok) {
+              const estadoResponse = await fetch(`/compras/:id_seguimiento${data.estado_actual_id}`);
+              const estadoData = await estadoResponse.json();
+    
+              resultadoDiv.textContent = `Estado de compra: ${estadoData.nombre_estado}`;
+            } else {
+              resultadoDiv.textContent = 'Compra no encontrada';
+            }
+          } catch (error) {
+            resultadoDiv.textContent = 'Error al obtener el estado de la compra';
+            console.error(error);
+          }
+        });
+    </script>
+
+</body>
+</html>
