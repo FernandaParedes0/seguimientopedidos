@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const profile = require('..//models/profile');
-const order = require('../models/order');
+const Profile = require('../models/profile'); 
+const Order = require('../models/order');
 
 router.get('/profile/:profileId/orders', async (req, res) => {
   const { profileId } = req.params;
 
   try {
-    const userProfile = await profile.findByPk(profileId, {
-      include: { model: order, as: 'orders' },
+    const userProfile = await Profile.findByPk(profileId, { 
+      include: { model: Order, as: 'orders' },
     });
 
     if (!userProfile) {
@@ -24,3 +24,4 @@ router.get('/profile/:profileId/orders', async (req, res) => {
 });
 
 module.exports = router;
+

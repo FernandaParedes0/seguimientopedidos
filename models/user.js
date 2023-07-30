@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/db');
+const Profile = require('./profile')
 
-const user = sequelize.define('user', {
+const User = sequelize.define('user', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,7 +16,9 @@ const user = sequelize.define('user', {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-});
+  });
 
-module.exports = user;
+Profile.hasOne(User);
+User.belongsTo(Profile);
 
+module.exports = User;

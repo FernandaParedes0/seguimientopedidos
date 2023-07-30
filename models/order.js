@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/db');
-const profile = require('./profile')
+const Profile = require('./profile');
+const User = require('./user')
 
-const order = sequelize.define('order', {
+const Order = sequelize.define('order', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -21,16 +22,18 @@ const order = sequelize.define('order', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
-  user_id: {
+  profile_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+},);
 
-}, {
-  timestamps: false,
-});
+// Asociaciones
+Order.belongsTo(Profile, { foreignKey: 'profile_id' });
+Profile.hasMany(Order, { foreignKey: 'profile_id' });
 
-order.belongsTo(profile, { as: 'profile', foreignKey: 'user_id' });
-module.exports = order;
-
-
+module.exports = Order;

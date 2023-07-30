@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/db');
+const User = require('./user');
 
-const review = sequelize.define('review', {
+const Review = sequelize.define('review', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,6 +16,12 @@ const review = sequelize.define('review', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-module.exports = review;
+// Asociaciones
+Review.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Review, { foreignKey: 'userId' });
